@@ -1,0 +1,22 @@
+application: hellojv1234
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /visordb
+  script: utilidades.visorDb.visor_db.app
+
+- url: /singup.*
+  script: register.application
+
+- url: /login.*
+  script: login.application
+
+- url: /logout.*
+  script: logout.application
+
+libraries:
+- name: jinja2
+  version: latest

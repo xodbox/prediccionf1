@@ -1,0 +1,23 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /login.*
+  script: singUpSystem.login.app
+
+- url: /singup.*
+  script: singUpSystem.register.app
+
+- url: /logout.*
+  script: singUpSystem.logout.app
+
+- url: /home.*
+  script: main.app
+
+- url: /.*
+  script: inicio.app
+
+libraries:
+- name: jinja2
+  version: latest

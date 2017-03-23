@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predicciones F1</title>
+</head>
+
+<body>
+	Bienvenido <b>{{usuario}}</b>
+	<a href ="/logout"> Logout </a>
+	
+	<br>
+	<h1>Gran Premio de {{carrera}}</h1>
+	<hr />
+	<h3>Horarios</h3>
+	<b>Clasif:</b> {{horario_clasificacion}}<br>
+	<b>Carrera:</b> {{horario_carrera}}
+	<h3>LAS INSCRIPCIONES SE CIERRAN {{limitetiempo}} MINUTOS ANTES DE CADA EVENTO</h3>
+	<hr />
+	
+	<h3>{{trampa}}</h3>	
+	{% if now < limiteclasificacion %}
+	<form method="post">
+		<select name="poleman">
+		{% for piloto in pilotos %}
+			<option value={{piloto.numero}}>{{piloto.numero}} {{piloto.nombre}} {{piloto.apellido}} ({{piloto.escuderia}})</option>
+		{% endfor %}
+		</select>
+		<br>
+		<input type = "submit" value = "Enviar Poleman">
+	</form>
+	<br>
+	{% endif %}
+	{% if now < limitecarrera %}
+	<form method="post">
+		<select name="primero">
+		{% for piloto in pilotos %}
+			<option value={{piloto.numero}}>{{piloto.numero}} {{piloto.nombre}} {{piloto.apellido}} ({{piloto.escuderia}})</option>
+		{% endfor %}
+		</select>
+		<br>
+		<input type = "submit" value = "Enviar Primero">
+	</form>
+	<br>
+	{% endif %}
+	{% if now < limitecarrera %}
+	<form method="post">
+		<select name="segundo">
+		{% for piloto in pilotos %}
+			<option value={{piloto.numero}}>{{piloto.numero}} {{piloto.nombre}} {{piloto.apellido}} ({{piloto.escuderia}})</option>
+		{% endfor %}
+		</select>
+		<br>
+		<input type = "submit" value = "Enviar Segundo">
+	</form>
+	<br>
+	{% endif %}
+	{% if now < limitecarrera %}
+	<form method="post">
+		<select name="tercero">
+		{% for piloto in pilotos %}
+			<option value={{piloto.numero}}>{{piloto.numero}} {{piloto.nombre}} {{piloto.apellido}} ({{piloto.escuderia}})</option>
+		{% endfor %}
+		</select>
+		<br>
+		<input type = "submit" value = "Enviar Tercero">
+	{% endif %}
+	</form>
+	<hr />	
+	{% for userpoints in allusers %}
+	<h3>{{userpoints.usuario}}</h3>
+	<table border="1">
+		<tr>
+			<th><div>Gran Premio</div></th>
+			<th colspan = "2">Poleman</th>
+			<th colspan = "2">Primero</th>
+			<th colspan = "2">Segundo</th>
+			<th colspan = "2">Tercero</th>
+			<th>Puntos</th>
+		</tr>
+		{% for i in range(userpoints.size) %}
+		<tr>
+			<td rowspan = "2"><p style="width:110%;">{{userpoints.grandespremios[i]}}</p></td>
+			<td>Real: {{userpoints.realpolemans[i]}}</td>
+			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptospolemans[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>Real: {{userpoints.realprimeros[i]}}</td>
+			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptosprimeros[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>Real:{{userpoints.realsegundos[i]}}</td>
+			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptossegundos[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>Real: {{userpoints.realterceros[i]}}</td>
+			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptosterceros[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td align = "center" rowspan = "2"><b>{{userpoints.ptosdelosgps[i]}}</b></td>
+		</tr>
+		<tr>
+			<td>Pred: {{userpoints.prepolemans[i]}}</td>
+			<td>Pred: {{userpoints.preprimeros[i]}}</td>
+			<td>Pred: {{userpoints.presegundos[i]}}</td>
+			<td>Pred: {{userpoints.preterceros[i]}}</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td align = "right" colspan = "10"><b>PTOS TOTALES: {{userpoints.ptostotales}}</b></td>
+		</tr>
+	</table>
+	{% endfor %}
+	
+</body>
+
+</html>
+
