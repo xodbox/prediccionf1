@@ -1,8 +1,9 @@
+# -*- coding: cp1252 -*-
 import webapp2
 from singUpSystem.cookies_manager import check_secure_val
 from singUpSystem.scheme import UserInfo
 
-
+#Verifica si el usiario ha ingresado anteriormente y redirecciona a la pagina adecuada
 class WelcomeHandler(webapp2.RequestHandler):
 	def get(self):
 

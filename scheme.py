@@ -1,3 +1,5 @@
+""" Esquema de la base de datos """
+
 from google.appengine.ext import db
 
 class Predicciones(db.Model):

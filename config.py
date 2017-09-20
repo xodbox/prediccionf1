@@ -1,3 +1,5 @@
+#Este archivo se usa para generar la primera vez la tabla con todos los pilotos
+
 from collections import namedtuple
 
 limitetiempo = 4

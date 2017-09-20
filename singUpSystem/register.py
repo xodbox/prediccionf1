@@ -1,3 +1,5 @@
+""" Sistema de registro de usuarios. """
+
 import webapp2
 import cgi
 import re
@@ -12,15 +14,19 @@ EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 
 #Validar valores usuario, password, pass verification e e-mail
 def valid_user(user):
+        """ Validar valores ingresados de usuario. """
 	return USER_RE.match(user)
 
 def valid_pass(password):
+        """ Validar valores ingresados de password. """
 	return PASS_RE.match(password)
 
 def valid_verify(password, verify):
+        """ Verificar que passwords sean iguales. """
 	return password == verify
 
 def valid_email(email):
+        """ Verificar valores ingresados de email. """
 	if not email:
 		return True
 	else:
@@ -30,6 +36,8 @@ def valid_email(email):
 class MainPage(Handler):
 
 	def write_form(self, userError="", passError="", verifyError="", mailError="", username ="", mail = ""):
+                """ Render pagina de singup. """
+                
 		self.render("singup.html",
 								userError = userError,
 
@@ -43,12 +51,14 @@ class MainPage(Handler):
 		self.write_form()
 
 	def post(self):
-			
+                
+		#Obtener valores ingresados por elusuario	
 		username = self.request.get("username")
 		password = self.request.get("password")
 		verify = self.request.get("verify")
 		email = self.request.get("email")
 
+                #Validar valores ingresados por el usuario
 		vuser = valid_user(username)
 		vpass = valid_pass(password)
 		vverify = valid_verify(password, verify)

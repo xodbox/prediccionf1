@@ -1,3 +1,5 @@
+"""Manejo de Cookies"""
+
 import webapp2
 import hmac
 
