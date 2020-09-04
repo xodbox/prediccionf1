@@ -129,25 +129,21 @@ class MainPage(handler.Handler):
 			if username != activeusername and resultado.actual == True:
 				if predicciones.count() > 0:
 					prediccion = predicciones.get()
-					"""El usuario acutal no es el que hizo esta prediccion, pero la hora de ingreso ya ha pasado,
-                                        por tanto se muestra la prediccion """
 					if limiteclasificacion < now:
+						# El usuario acutal no es el que hizo esta prediccion, pero la hora de ingreso ya ha pasado, por tanto se muestra la prediccion
 						prepolemans.append(self.getabr(prediccion.poleman))
-					"""El usuario acutal no es el que hizo esta prediccion y la hora de ingreso no ha pasado,
-                                        por tanto NO se muestra la prediccion """
 					else:
+						# El usuario acutal no es el que hizo esta prediccion y la hora de ingreso no ha pasado, por tanto NO se muestra la prediccion
 						prepolemans.append("")
 
 
-					"""El usuario acutal no es el que hizo esta prediccion, pero la hora de ingreso ya ha pasado,
-                                        por tanto se muestra la prediccion """
 					if limitecarrera < now:
+						# El usuario acutal no es el que hizo esta prediccion, pero la hora de ingreso ya ha pasado, por tanto se muestra la prediccion
 						preprimeros.append(self.getabr(prediccion.primero))
 						presegundos.append(self.getabr(prediccion.segundo))
 						preterceros.append(self.getabr(prediccion.tercero))
-					"""El usuario acutal no es el que hizo esta prediccion y la hora de ingreso no ha pasado,
-                                        por tanto NO se muestra la prediccion """
 					else:
+						# El usuario acutal no es el que hizo esta prediccion y la hora de ingreso no ha pasado, por tanto NO se muestra la prediccion
 						preprimeros.append("")
 						presegundos.append("")
 						preterceros.append("")
@@ -219,7 +215,7 @@ class MainPage(handler.Handler):
 			# a.put()
 
 		#Este codigo solo se ejecuto una vez para crear la tabla de resultados
-		# a = Resultados(granpremio = config.carrera, fechagp = datetime.datetime(year=2016, month = 7, day = 10), fechaqualy = datetime.datetime(year=2016, month = 7, day = 15), poleman = 0, primero = 0, segundo = 0, tercero = 0, actual = True)
+		# a = Resultados(granpremio = "carrera1", fechagp = datetime.datetime(year=2016, month = 7, day = 10), fechaqualy = datetime.datetime(year=2016, month = 7, day = 15), poleman = 0, primero = 0, segundo = 0, tercero = 0, actual = True)
 		# a.put()
 			
 		#recuperar la cookie y el userId, chequear si es valida
