@@ -63,6 +63,18 @@
 		</select>
 		<br>
 		<input type = "submit" value = "Enviar Sexto">
+	</form>
+	<br>
+	{% endif %}
+	{% if now < limitecarrera %}
+	<form method="post">
+		<select name="decimo">
+		{% for piloto in pilotos %}
+			<option value={{piloto.numero}}>{{piloto.numero}} {{piloto.nombre}} {{piloto.apellido}} ({{piloto.escuderia}})</option>
+		{% endfor %}
+		</select>
+		<br>
+		<input type = "submit" value = "Enviar Décimo">
 	{% endif %}
 	</form>
 	<hr />	
@@ -75,6 +87,7 @@
 			<th colspan = "2">Cuarto</th>
 			<th colspan = "2">Quinto</th>
 			<th colspan = "2">Sexto</th>
+			<th colspan = "2">D&eacutecimo</th>
 			<th>Puntos</th>
 		</tr>
 		{% for i in range(userpoints.size) %}
@@ -88,6 +101,8 @@
 			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptossegundos[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td>Real: {{userpoints.realterceros[i]}}</td>
 			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptosterceros[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>Real: {{userpoints.realdecimos[i]}}</td>
+			<td rowspan = "2">&nbsp;&nbsp;&nbsp;&nbsp;{{userpoints.ptosdecimos[i]}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td align = "center" rowspan = "2"><b>{{userpoints.ptosdelosgps[i]}}</b></td>
 		</tr>
 		<tr>
@@ -95,10 +110,11 @@
 			<td>Pred: {{userpoints.preprimeros[i]}}</td>
 			<td>Pred: {{userpoints.presegundos[i]}}</td>
 			<td>Pred: {{userpoints.preterceros[i]}}</td>
+			<td>Pred: {{userpoints.predecimos[i]}}</td>
 		</tr>
 		{% endfor %}
 		<tr>
-			<td align = "right" colspan = "10"><b>PTOS TOTALES: {{userpoints.ptostotales}}</b></td>
+			<td align = "right" colspan = "12"><b>PTOS TOTALES: {{userpoints.ptostotales}}</b></td>
 		</tr>
 	</table>
 	{% endfor %}

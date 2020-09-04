@@ -16,7 +16,8 @@ from scheme import Predicciones, Resultados, Pilotos, query
 
 UserPoints = namedtuple('UserPoints', [  'ptostotales', 'grandespremios', 'ptospolemans', 'ptosprimeros', 'ptossegundos', 'ptosterceros', 'ptosdelosgps',
 										'realpolemans', 'realprimeros', 'realsegundos', 'realterceros',
-										'prepolemans', 'preprimeros', 'presegundos', 'preterceros', 'size', 'usuario'])
+										'prepolemans', 'preprimeros', 'presegundos', 'preterceros', 'size', 'usuario', 
+										'ptosdecimos', 'realdecimos', 'predecimos'])
 
 			   							   
 class MainPage(handler.Handler):
@@ -58,13 +59,19 @@ class MainPage(handler.Handler):
 			else:
 				ptostercereo= 0
 
+			if(resultado.decimo == prediccion.decimo):
+				ptosdecimo = 1
+			else:
+				ptosdecimo = 0
+
 		else:
 			ptospoleman = 0
 			ptosprimero = 0
 			ptossegundo = 0
 			ptostercereo = 0
+			ptosdecimo = 0
 			
-		return ptospoleman, ptosprimero, ptossegundo, ptostercereo
+		return ptospoleman, ptosprimero, ptossegundo, ptostercereo, ptosdecimo
 	
 	def getabr(self, numero):
                 """ Retorna la abreviacion del piloto acorde a su numero. """
@@ -96,22 +103,25 @@ class MainPage(handler.Handler):
 		ptosprimeros = []
 		ptossegundos = []
 		ptosterceros = []
+		ptosdecimos = []
 		ptosdelosgps = []
 		realpolemans = []
 		realprimeros = []
 		realsegundos = []
 		realterceros = []
+		realdecimos = []
 		prepolemans = []
 		preprimeros = []
 		presegundos = []
 		preterceros = []
+		predecimos = []
 
 		for resultado in resultados:
                         #Obtener del la BD las predicciones para el usuario correspondiente
 			predicciones = query("SELECT * FROM Predicciones WHERE usuario = :1 AND granpremio = :2", username, resultado.granpremio)
 
 			#Calular los puntos segun las predicciones obtenidas
-			ptospoleman, ptosprimero, ptossegundo, ptostercero = self.procesar_puntos(resultado, predicciones)
+			ptospoleman, ptosprimero, ptossegundo, ptostercero, ptosdecimo = self.procesar_puntos(resultado, predicciones)
 
 			#Crear listas para luego presentar los resultados en una tabla
 			grandespremios.append(resultado.granpremio)
@@ -119,12 +129,14 @@ class MainPage(handler.Handler):
 			ptosprimeros.append(ptosprimero)
 			ptossegundos.append(ptossegundo)
 			ptosterceros.append(ptostercero)
-			ptosdelosgps.append(ptospoleman + ptosprimero + ptossegundo + ptostercero)
-			ptostotales += ptospoleman + ptosprimero + ptossegundo + ptostercero
+			ptosdecimos.append(ptosdecimo)
+			ptosdelosgps.append(ptospoleman + ptosprimero + ptossegundo + ptostercero + ptosdecimo)
+			ptostotales += ptospoleman + ptosprimero + ptossegundo + ptostercero + ptosdecimo
 			realpolemans.append(self.getabr(resultado.poleman))
 			realprimeros.append(self.getabr(resultado.primero))
 			realsegundos.append(self.getabr(resultado.segundo))
 			realterceros.append(self.getabr(resultado.tercero))
+			realdecimos.append(self.getabr(resultado.decimo))
 
 			if username != activeusername and resultado.actual == True:
 				if predicciones.count() > 0:
@@ -142,16 +154,19 @@ class MainPage(handler.Handler):
 						preprimeros.append(self.getabr(prediccion.primero))
 						presegundos.append(self.getabr(prediccion.segundo))
 						preterceros.append(self.getabr(prediccion.tercero))
+						predecimos.append(self.getabr(prediccion.decimo))
 					else:
 						# El usuario acutal no es el que hizo esta prediccion y la hora de ingreso no ha pasado, por tanto NO se muestra la prediccion
 						preprimeros.append("")
 						presegundos.append("")
 						preterceros.append("")
+						predecimos.append("")
 				else:
 					prepolemans.append("")
 					preprimeros.append("")
 					presegundos.append("")
 					preterceros.append("")
+					predecimos.append("")
 
                         #El usuario actual es el que hizo la prediccion, por lo tanto siempre se muestra
 			else:
@@ -161,16 +176,19 @@ class MainPage(handler.Handler):
 					preprimeros.append(self.getabr(prediccion.primero))
 					presegundos.append(self.getabr(prediccion.segundo))
 					preterceros.append(self.getabr(prediccion.tercero))
+					predecimos.append(self.getabr(prediccion.decimo))
 				else:
 					prepolemans.append("")
 					preprimeros.append("")
 					presegundos.append("")
 					preterceros.append("")
+					predecimos.append("")
 				
 		
 		return UserPoints (ptostotales, grandespremios, ptospolemans, ptosprimeros, ptossegundos, ptosterceros, ptosdelosgps,
 							realpolemans, realprimeros, realsegundos, realterceros,
-							prepolemans, preprimeros, presegundos, preterceros, len(grandespremios), username)
+							prepolemans, preprimeros, presegundos, preterceros, len(grandespremios), username,
+							ptosdecimos, realdecimos, predecimos)
 
 	def pagina(self, horario_carrera, horario_clasificacion, user, trampa):
 		limiteclasificacion, limitecarrera, now = self.timemanage(horario_carrera, horario_clasificacion)
@@ -215,7 +233,7 @@ class MainPage(handler.Handler):
 			# a.put()
 
 		#Este codigo solo se ejecuto una vez para crear la tabla de resultados
-		# a = Resultados(granpremio = "carrera1", fechagp = datetime.datetime(year=2016, month = 7, day = 10), fechaqualy = datetime.datetime(year=2016, month = 7, day = 15), poleman = 0, primero = 0, segundo = 0, tercero = 0, actual = True)
+		# a = Resultados(granpremio = "carrera1", fechagp = datetime.datetime(year=2016, month = 7, day = 10), fechaqualy = datetime.datetime(year=2016, month = 7, day = 15), poleman = 0, primero = 0, segundo = 0, tercero = 0, decimo = 0, actual = True)
 		# a.put()
 			
 		#recuperar la cookie y el userId, chequear si es valida
@@ -260,6 +278,7 @@ class MainPage(handler.Handler):
 		primero = self.request.get("primero")
 		segundo = self.request.get("segundo")
 		tercero = self.request.get("tercero")
+		decimo = self.request.get("decimo")
 
                 #Obtener el nombre del GP acutal
 		resultados = query("SELECT * FROM Resultados WHERE actual = True")
@@ -340,6 +359,24 @@ class MainPage(handler.Handler):
 								 granpremio = carrera,
 								 fechagp = horario_carrera,
 								 tercero = int(tercero))
+					a.put()
+			else:
+				trampa = "No sea tramposo! Ya no se puede ingresar predicciones!"
+
+                #El usuario ingreso el decimo
+		if decimo != "":
+			if now < limitecarrera:
+                                #El usuario ya hizo una prediccion, por tanto se la reemplaza
+				if numpredicciones > 0:
+					a = predicciones.get()
+					a.decimo = int(decimo)
+					a.put()
+                                #El usuario no ha hecho una prediccion, por tanto se crea una nueva
+				else:
+					a = Predicciones(usuario = user.username,
+								 granpremio = carrera,
+								 fechagp = horario_carrera,
+								 decimo = int(decimo))
 					a.put()
 			else:
 				trampa = "No sea tramposo! Ya no se puede ingresar predicciones!"

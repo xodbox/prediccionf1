@@ -10,6 +10,7 @@ class Predicciones(db.Model):
 	primero = db.IntegerProperty()
 	segundo = db.IntegerProperty()
 	tercero = db.IntegerProperty()
+	decimo = db.IntegerProperty()
 	
 class Resultados(db.Model):
 	granpremio = db.StringProperty(required = True)
@@ -19,6 +20,7 @@ class Resultados(db.Model):
 	primero = db.IntegerProperty(required = True)
 	segundo = db.IntegerProperty(required = True)
 	tercero = db.IntegerProperty(required = True)
+	decimo = db.IntegerProperty(required = True)
 	actual = db.BooleanProperty(required = True)
 	
 class Pilotos(db.Model):
