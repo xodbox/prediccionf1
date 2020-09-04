@@ -201,7 +201,7 @@ class MainPage(handler.Handler):
 						horario_clasificacion=horaclasificacion,
 						pilotos = pilotos,
 						carrera = resultado.granpremio,
-						limitetiempo = config.limitetiempo + 1,
+						limitetiempo = config.limitetiempo,
 						limiteclasificacion = limiteclasificacion,
 						limitecarrera = limitecarrera,
 						now = now,

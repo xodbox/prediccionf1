@@ -2,7 +2,7 @@
 
 from collections import namedtuple
 
-limitetiempo = 4
+limitetiempo = 0
 
 Piloto = namedtuple('Piloto', ['orden', 'numero', 'nombre', 'apellido', 'escuderia', 'abreviacion'])
 
