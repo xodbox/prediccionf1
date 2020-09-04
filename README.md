@@ -17,3 +17,8 @@ Esta es una aplicacion web para el registrar predicciones de carreras de F1, y a
 4. Test locally:
 
 	dev_appserver.py .
+
+
+4. To deploy (use no promote to test it first, then enable this version in the console):
+
+	gcloud app deploy -v <version> --no-promote
